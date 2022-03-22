@@ -9,6 +9,8 @@ import { RegisterComponent } from './register/register.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
+import { AddNoteComponent } from './add-note/add-note.component';
+import { NotesComponent } from './notes/notes.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,8 @@ import { MatIconModule } from '@angular/material/icon';
     LoginComponent,
     RegisterComponent,
     NotFoundComponent,
+    AddNoteComponent,
+    NotesComponent,
   ],
   imports: [
     BrowserModule,
