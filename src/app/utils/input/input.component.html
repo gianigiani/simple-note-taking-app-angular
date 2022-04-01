@@ -1,0 +1,12 @@
+<div fxLayout="column" fxLayoutAlign="start">
+  <label>{{ label }}</label>
+  <input
+    *ngIf="controlType === 'input'"
+    [formControl]="control"
+    [type]="inputType"
+  />
+  <textarea
+    *ngIf="controlType === 'textarea'"
+    [formControl]="control"
+  ></textarea>
+</div>

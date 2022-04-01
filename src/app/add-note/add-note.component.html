@@ -1,1 +1,13 @@
-<p>add-note works!</p>
+<form (ngSubmit)="onSubmit()" [formGroup]="noteForm" fxLayout="row">
+  <app-input
+    label="Add new note"
+    controlType="textarea"
+    [control]="$any(noteForm.get('content'))"
+  ></app-input>
+
+  <div class="example-button-container">
+    <button mat-mini-fab color="gray" aria-label="Add button">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</form>

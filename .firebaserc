@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "simple-note-taking-app-a7499": {
+      "hosting": {
+        "simple-note-taking-app": [
+          "simple-note-taking-app-a7499"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "simple-note-taking-app-a7499"
+  }
+}

@@ -1,0 +1,26 @@
+<div class="login-container" fxLayoutAlign="space-around center">
+  <mat-card class="card" fxLayout="column" fxLayoutAlign="center space-between">
+    <mat-card-header>
+      <mat-card-title>Log in</mat-card-title>
+    </mat-card-header>
+
+    <form (ngSubmit)="onSubmit()" [formGroup]="authForm">
+      <app-input
+        label="Email"
+        inputType="text"
+        [control]="$any(authForm.get('email'))"
+      ></app-input>
+      <app-input
+        inputType="password"
+        label="Password"
+        [control]="$any(authForm.get('password'))"
+      ></app-input>
+
+      <div *ngIf="authForm.errors">
+        <!-- <p *ngIf="authForm.errors.credentials">Invalid username or password</p> -->
+      </div>
+
+      <button mat-raised-button>Submit</button>
+    </form>
+  </mat-card>
+</div>

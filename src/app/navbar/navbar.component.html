@@ -1,12 +1,31 @@
-<nav class="navbar">
-  <p>
-    <mat-toolbar color="primary">
-      <span>Notes</span>
-      <span class="example-spacer"></span>
-      <span class="username">Hello, user</span>
-      <button mat-icon-button class="logout" aria-label="logout-button">
-        Logout
+<nav>
+  <mat-toolbar color="primary">
+    <span>Notes</span>
+    <span class="example-spacer"></span>
+    <span *ngIf="user" class="username">{{ user.email }}</span>
+
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item routerLink="/register" *ngIf="!user">
+        <mat-icon>register</mat-icon>
+        <span>Register</span>
       </button>
-    </mat-toolbar>
-  </p>
+      <button mat-menu-item routerLink="/login" *ngIf="!user">
+        <mat-icon>login</mat-icon>
+        <span>Login</span>
+      </button>
+
+      <button
+        mat-menu-item
+        (click)="onLogout()"
+        routerLink="/login"
+        *ngIf="user"
+      >
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
 </nav>
