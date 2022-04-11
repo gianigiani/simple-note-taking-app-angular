@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Note } from '../models/Note';
 import { NotesService } from '../services/notes.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,12 +11,26 @@ import { NotesService } from '../services/notes.service';
 export class DashboardComponent implements OnInit {
   notes: Note[];
 
-  constructor(private notesService: NotesService) {}
+  constructor(private notesService: NotesService, private router: Router) {}
 
   ngOnInit(): void {
-    this.notesService.note.subscribe((item) => {
-      this.notes = item;
-      console.log(this.notes);
+    this.notesService.getNotes().subscribe((notes) => {
+      this.notes = notes;
+      console.log(notes);
     });
+  }
+
+  onFilter() {
+    return this.notesService
+      .filterNotes()
+      .subscribe((filteredNotes) => (this.notes = filteredNotes));
+  }
+
+  onDelete(id: string) {
+    this.notesService.deleteNote(id);
+  }
+
+  onAddNewNote() {
+    this.router.navigateByUrl('/new-note');
   }
 }

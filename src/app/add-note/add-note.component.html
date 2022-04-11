@@ -1,13 +1,44 @@
-<form (ngSubmit)="onSubmit()" [formGroup]="noteForm" fxLayout="row">
-  <app-input
-    label="Add new note"
-    controlType="textarea"
-    [control]="$any(noteForm.get('content'))"
-  ></app-input>
+<div class="addNoteContainer">
+  <form (ngSubmit)="onSubmit()" [formGroup]="noteForm" fxLayout="column">
+    <app-input
+      label="Title"
+      inputType="text"
+      [control]="$any(noteForm.get('title'))"
+    ></app-input>
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <app-input
+        label="Category"
+        inputType="text"
+        [control]="$any(noteForm.get('category'))"
+      ></app-input>
+      <button mat-mini-fab color="gray" aria-label="Add button">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
 
-  <div class="example-button-container">
-    <button mat-mini-fab color="gray" aria-label="Add button">
-      <mat-icon>add</mat-icon>
-    </button>
-  </div>
-</form>
+    <app-input
+      label="Body"
+      controlType="textarea"
+      [control]="$any(noteForm.get('content'))"
+    ></app-input>
+
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <div class="cancelButton">
+        <button
+          mat-raised-button
+          color="gray"
+          aria-label="Cancel button"
+          (click)="onCancel()"
+          type="button"
+        >
+          Cancel
+        </button>
+      </div>
+      <div class="addButton">
+        <button mat-raised-button color="primary" aria-label="Add button">
+          Save
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

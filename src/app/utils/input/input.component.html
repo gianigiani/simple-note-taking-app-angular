@@ -1,4 +1,4 @@
-<div fxLayout="column" fxLayoutAlign="start">
+<div fxLayout="column" fxLayoutAlign="start" class="entry">
   <label>{{ label }}</label>
   <input
     *ngIf="controlType === 'input'"
@@ -6,7 +6,24 @@
     [type]="inputType"
   />
   <textarea
+    rows="12"
     *ngIf="controlType === 'textarea'"
     [formControl]="control"
   ></textarea>
+  <div *ngIf="showErrors()" class="redError">
+    <p *ngIf="control.errors['required']">Value is required</p>
+    <p *ngIf="control.errors['email']">Enter a valid email</p>
+    <p *ngIf="control.errors['minlength']">
+      Value you entered is
+      {{ control.errors["minlength"].actualLength }} characters long, but it
+      must be at leat
+      {{ control.errors["minlength"].requiredLength }} characters
+    </p>
+    <p *ngIf="control.errors['maxlength']">
+      Value you entered is
+      {{ control.errors["maxlength"].actualLength }} characters long, but it
+      must be at leat
+      {{ control.errors["maxlength"].requiredLength }} characters
+    </p>
+  </div>
 </div>

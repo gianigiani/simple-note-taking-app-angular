@@ -32,11 +32,7 @@ export class AuthService {
 
   isLoggedIn = false;
 
-  constructor(
-    private router: Router,
-    private notesService: NotesService,
-    private auth: Auth
-  ) {
+  constructor(private auth: Auth) {
     if (auth) {
       this.user = authState(this.auth);
       this.userDisposable = authState(this.auth)
@@ -45,7 +41,7 @@ export class AuthService {
           map((u) => !!u)
         )
         .subscribe((isLoggedIn) => {
-          this.isLoggedIn = true;
+          this.isLoggedIn = isLoggedIn;
         });
     }
   }

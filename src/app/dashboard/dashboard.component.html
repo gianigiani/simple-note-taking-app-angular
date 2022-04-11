@@ -1,2 +1,34 @@
-<app-add-note></app-add-note>
-<app-note *ngFor="let note of notes" [note]="note"></app-note>
+<div class="containerDashboard">
+  <div fxLayout="column">
+    <div fxLayout="row" class="addAndSort">
+      <div class="roundButton">
+        <button
+          mat-mini-fab
+          color="gray"
+          aria-label="Add button"
+          (click)="onAddNewNote()"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <div class="roundButton">
+        <button
+          mat-mini-fab
+          color="gray"
+          aria-label="Add button"
+          (click)="onFilter()"
+        >
+          <mat-icon><span class="material-icons"> sort </span></mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="notesContainer">
+      <app-note
+        *ngFor="let note of notes"
+        [note]="note"
+        class="noteContainer"
+        (delete)="onDelete(note.id)"
+      ></app-note>
+    </div>
+  </div>
+</div>

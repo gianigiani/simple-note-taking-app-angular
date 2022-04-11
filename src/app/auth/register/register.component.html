@@ -1,7 +1,7 @@
-<div class="login-container" fxLayoutAlign="space-around center">
-  <mat-card class="card" fxLayout="column" fxLayoutAlign="center space-between">
-    <mat-card-header>
-      <mat-card-title fxLayoutAlign="start">Register</mat-card-title>
+<div class="login-container">
+  <mat-card class="card" fxLayout="column">
+    <mat-card-header fxLayoutAlign="center center">
+      <mat-card-title>Register</mat-card-title>
     </mat-card-header>
 
     <form (ngSubmit)="onSubmit()" [formGroup]="authForm">
@@ -21,11 +21,26 @@
         [control]="$any(authForm.get('passwordConfirmation'))"
       ></app-input>
 
-      <div *ngIf="authForm.errors">
-        <!-- <p *ngIf="authForm.errors.credentials">Invalid username or password</p> -->
+      <div
+        class="redError secondError"
+        *ngIf="
+          authForm.get('password').touched &&
+          authForm.get('passwordConfirmation').touched &&
+          authForm.errors
+        "
+      >
+        <p *ngIf="authForm.errors['passwordsDontMatch']">
+          Password and Password Confirmation must match
+        </p>
+        <p *ngIf="authForm.errors['noConnection']">
+          No internet connection detected, failed to register
+        </p>
+        <p *ngIf="authForm.errors['unknownError']">Failed to sign up</p>
       </div>
 
-      <button mat-raised-button>Submit</button>
+      <button color="primary" mat-raised-button class="blockButton">
+        Submit
+      </button>
     </form>
   </mat-card>
 </div>

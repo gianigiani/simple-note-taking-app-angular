@@ -8,11 +8,21 @@
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item routerLink="/register" *ngIf="!user">
+      <button
+        mat-menu-item
+        routerLink="/register"
+        routerLinkActive="activeLink"
+        *ngIf="!user"
+      >
         <mat-icon>register</mat-icon>
         <span>Register</span>
       </button>
-      <button mat-menu-item routerLink="/login" *ngIf="!user">
+      <button
+        mat-menu-item
+        routerLink="/login"
+        routerLinkActive="activeLink"
+        *ngIf="!user"
+      >
         <mat-icon>login</mat-icon>
         <span>Login</span>
       </button>

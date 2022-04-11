@@ -47,6 +47,12 @@ export class RegisterComponent implements OnInit {
       .then(() => {
         this.router.navigateByUrl('/');
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => {
+        if (!err.status) {
+          this.authForm.setErrors({ noConnection: true });
+        } else {
+          this.authForm.setErrors({ unknownError: true });
+        }
+      });
   }
 }
