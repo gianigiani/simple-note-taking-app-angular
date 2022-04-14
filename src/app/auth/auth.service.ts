@@ -38,6 +38,10 @@ export class AuthService {
     }
   }
 
+  isAuth() {
+    return this.isLoggedIn;
+  }
+
   async login(credentials: LoginCredentials) {
     return await signInWithEmailAndPassword(
       this.auth,
