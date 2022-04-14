@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Note } from '../models/Note';
-import { NotesService } from '../services/notes.service';
 
 @Component({
   selector: 'app-note',
@@ -10,10 +9,15 @@ import { NotesService } from '../services/notes.service';
 export class NoteComponent implements OnInit {
   @Input() note: Note | null = null;
   @Output('delete') deleteClicked = new EventEmitter();
+  @Output('edit') editClicked = new EventEmitter();
 
-  constructor(private notesService: NotesService) {}
+  constructor() {}
 
   ngOnInit(): void {}
+
+  onEdit() {
+    this.editClicked.emit();
+  }
 
   onDelete() {
     this.deleteClicked.emit();

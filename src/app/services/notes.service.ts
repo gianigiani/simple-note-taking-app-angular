@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { shareReplay, tap } from 'rxjs/operators';
-import { traceUntilFirst } from '@angular/fire/performance';
-import { Auth, user, User } from '@angular/fire/auth';
+import { Observable } from 'rxjs';
 import {
   addDoc,
   collection,
@@ -13,7 +10,7 @@ import {
   orderBy,
   query,
   serverTimestamp,
-  where,
+  getDoc,
 } from '@angular/fire/firestore';
 
 import { Note } from '../models/Note';
@@ -23,14 +20,12 @@ import { Note } from '../models/Note';
 })
 export class NotesService {
   public notes$: Observable<Note[]>;
-  public user: Observable<User | null>;
 
   constructor(private readonly firestore: Firestore) {}
 
   getNotes(): Observable<Note[]> {
     const notesCollection = query(
       collection(this.firestore, 'notes'),
-      where('userUid', '==', 'v3qHNjymPKaU3EEkH5PqKKpHoYw1'),
       orderBy('category', 'asc'),
       orderBy('createdAt', 'desc')
       // push id for single note
@@ -41,30 +36,35 @@ export class NotesService {
         const { id } = snapshot;
         return { id, content, userUid, createdAt, category, title };
       },
-      toFirestore: (it: any) => it,
+      toFirestore: (elem: Note) => elem,
     });
-    this.notes$ = collectionData(notesCollection);
+    this.notes$ = collectionData<Note>(notesCollection);
     return this.notes$;
   }
 
-  async addNote(note: Note, userUid: string) {
+  async addNewNote(note: Note, userUid: string) {
     return await addDoc(collection(this.firestore, 'notes'), {
       title: note.title,
       content: note.content,
-      category: 'food',
+      category: note.category,
       createdAt: serverTimestamp(),
       userUid,
     });
+  }
+
+  async getSingleDoc(id: string) {
+    return await getDoc<any>(doc(this.firestore, `notes/${id}`));
   }
 
   async deleteNote(id: string) {
     return await deleteDoc(doc(this.firestore, `notes/${id}`));
   }
 
+  //filter
+  // TODO: implement filter for different categories, createdAt, asc and desc
   filterNotes() {
     const notesCollection = query(
       collection(this.firestore, 'notes'),
-      where('userUid', '==', 'v3qHNjymPKaU3EEkH5PqKKpHoYw1'),
       orderBy('createdAt', 'desc')
       // push id for single note
     ).withConverter<Note>({
@@ -74,9 +74,9 @@ export class NotesService {
         const { id } = snapshot;
         return { id, content, userUid, createdAt, category, title };
       },
-      toFirestore: (it: any) => it,
+      toFirestore: (elem: Note) => elem,
     });
-    this.notes$ = collectionData(notesCollection);
+    this.notes$ = collectionData<Note>(notesCollection);
     return this.notes$;
   }
 }

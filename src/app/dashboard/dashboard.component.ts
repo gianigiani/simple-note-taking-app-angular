@@ -16,7 +16,6 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.notesService.getNotes().subscribe((notes) => {
       this.notes = notes;
-      console.log(notes);
     });
   }
 
@@ -31,6 +30,12 @@ export class DashboardComponent implements OnInit {
   }
 
   onAddNewNote() {
-    this.router.navigateByUrl('/new-note');
+    this.router.navigateByUrl('/note');
+  }
+
+  onEdit(id: string) {
+    console.log('go to the /new/:id and show the content of the note');
+    // this.router.navigateByUrl(`/note/:${id}`);
+    // get docData after id and populate the form
   }
 }

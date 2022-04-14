@@ -15,28 +15,25 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-// import { MatFormFieldModule } from '@angular/material/form-field';
-// import { TextFieldModule } from '@angular/cdk/text-field';
-// import { MatInputModule } from '@angular/material/input';
 
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import {
-  provideAnalytics,
-  getAnalytics,
+  // provideAnalytics,
+  // getAnalytics,
   ScreenTrackingService,
   UserTrackingService,
 } from '@angular/fire/analytics';
-import { provideFunctions, getFunctions } from '@angular/fire/functions';
-import { provideMessaging, getMessaging } from '@angular/fire/messaging';
-import { providePerformance, getPerformance } from '@angular/fire/performance';
-import {
-  provideRemoteConfig,
-  getRemoteConfig,
-} from '@angular/fire/remote-config';
-import { provideStorage, getStorage } from '@angular/fire/storage';
+// import { provideStorage, getStorage } from '@angular/fire/storage';
+// import { provideFunctions, getFunctions } from '@angular/fire/functions';
+// import { provideMessaging, getMessaging } from '@angular/fire/messaging';
+// import { providePerformance, getPerformance } from '@angular/fire/performance';
+// import {
+//   provideRemoteConfig,
+//   getRemoteConfig,
+// } from '@angular/fire/remote-config';
 
 @NgModule({
   declarations: [AppComponent, NavbarComponent],
@@ -50,9 +47,6 @@ import { provideStorage, getStorage } from '@angular/fire/storage';
     MatCardModule,
     MatMenuModule,
     MatButtonModule,
-    // MatFormFieldModule,
-    // TextFieldModule,
-    // MatInputModule,
     AppRoutingModule,
     ReactiveFormsModule,
     FlexLayoutModule,
@@ -66,12 +60,12 @@ import { provideStorage, getStorage } from '@angular/fire/storage';
       return firestore;
     }),
 
-    provideAnalytics(() => getAnalytics()),
-    provideFunctions(() => getFunctions()),
-    provideMessaging(() => getMessaging()),
-    providePerformance(() => getPerformance()),
-    provideRemoteConfig(() => getRemoteConfig()),
-    provideStorage(() => getStorage()),
+    // provideAnalytics(() => getAnalytics()),
+    // provideFunctions(() => getFunctions()),
+    // provideMessaging(() => getMessaging()),
+    // providePerformance(() => getPerformance()),
+    // provideRemoteConfig(() => getRemoteConfig()),
+    // provideStorage(() => getStorage()),
   ],
   providers: [ScreenTrackingService, UserTrackingService],
   bootstrap: [AppComponent],

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
-import { from } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -35,7 +34,6 @@ export class LoginComponent implements OnInit {
       })
       .catch((err) => {
         if (err.message === ('EMAIL_NOT_FOUND' || 'INVALID_PASSWORD')) {
-          console.log(err);
           this.authForm.setErrors({ credentials: true });
         }
       });

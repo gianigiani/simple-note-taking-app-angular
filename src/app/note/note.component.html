@@ -1,11 +1,20 @@
 <div>
   <mat-card class="item" *ngIf="note">
     <h4>{{ note.title }}</h4>
-    <p>{{ note.content }} - {{ note.category }}</p>
+    <p>{{ note.category }}</p>
+    <p>{{ note.content }}</p>
   </mat-card>
-  <div class="xbutton">
-    <mat-icon aria-hidden="false" aria-label="Close icon" (click)="onDelete()"
-      >close</mat-icon
-    >
+
+  <div class="cardButtons">
+    <div class="cardButton">
+      <mat-icon aria-hidden="false" aria-label="Edit icon" (click)="onEdit()"
+        >edit</mat-icon
+      >
+    </div>
+    <div class="cardButton">
+      <mat-icon aria-hidden="false" aria-label="Close icon" (click)="onDelete()"
+        >close</mat-icon
+      >
+    </div>
   </div>
 </div>

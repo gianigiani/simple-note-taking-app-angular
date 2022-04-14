@@ -6,7 +6,7 @@ import { DashboardComponent } from './dashboard.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
-  { path: 'new-note', component: AddNoteComponent },
+  { path: 'note', component: AddNoteComponent },
   { path: '**', component: NotFoundComponent },
 ];
 

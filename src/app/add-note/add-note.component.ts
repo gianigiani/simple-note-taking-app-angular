@@ -25,7 +25,7 @@ export class AddNoteComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authService.user.subscribe((item) => {
+    this.authService.user$.subscribe((item) => {
       if (item) {
         this.userUid = item.uid;
       }
@@ -37,17 +37,29 @@ export class AddNoteComponent implements OnInit {
       return;
     }
 
-    console.log(this.userUid);
     this.notesService
-      .addNote(this.noteForm.value, this.userUid)
-      .then(() => this.noteForm.reset())
+      .addNewNote(this.noteForm.value, this.userUid)
+      .then(() => {
+        this.noteForm.reset();
+        this.router.navigateByUrl('/');
+      })
       .catch((err) => {
-        console.log(err);
+        if (!err.status) {
+          this.noteForm.setErrors({ noConnection: true });
+        } else {
+          this.noteForm.setErrors({ unknownError: true });
+        }
       });
   }
 
   onCancel() {
     this.noteForm.reset();
     this.router.navigateByUrl('');
+  }
+
+  getSingleDocData() {
+    // get id from route
+    // const singleNote =  this.notesService.getSingleDoc(id);
+    // console.log(singleNote.data());
   }
 }

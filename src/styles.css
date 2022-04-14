@@ -4,13 +4,16 @@ html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
 nav {
   height: 4rem;
 }
+
 .login-container {
   display: flex;
   margin: auto;
@@ -33,6 +36,7 @@ input {
   border-width: 0.5px;
   border-color: gray;
 }
+
 textarea {
   margin-top: 5px;
   margin-bottom: 5px;
@@ -48,6 +52,7 @@ textarea:focus,
 input:focus {
   outline: none;
 }
+
 .entry {
   margin: 0;
   margin-top: 1rem;
@@ -67,29 +72,36 @@ input:focus {
 .notesContainer {
   padding: 20px;
   display: flex;
-  /* flex-direction: column; */
   flex-wrap: wrap;
+  /* justify-content: space-around; */
 }
+
 .noteContainer {
   padding: 10px;
   position: relative;
   border-radius: 4px;
 }
 
-.xbutton {
+.cardButtons {
   top: 14px;
   right: 14px;
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+}
+
+.cardButton {
   width: 24px;
   height: 24px;
   border-radius: 4px;
-  position: absolute;
   cursor: pointer;
+  margin-left: 5px;
 }
 
-/* .noteContainer:hover .xbutton {
-  display: block;
-  cursor: pointer;
-} */
+.noteButtons {
+  margin: 0;
+  margin-top: 2rem;
+}
 
 .addAndSort {
   padding: 1rem;

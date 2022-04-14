@@ -1,4 +1,8 @@
 .item {
   max-width: 300px;
-  /* margin-bottom: 8px; */
+  min-width: 100px;
+}
+
+mat-card h4 {
+  margin-top: 20px;
 }

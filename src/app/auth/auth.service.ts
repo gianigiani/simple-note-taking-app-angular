@@ -3,14 +3,9 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
-import { Router } from '@angular/router';
 import { Observable, Subscription, EMPTY } from 'rxjs';
 import { Auth, authState, signOut, User } from '@angular/fire/auth';
 import { map } from 'rxjs/operators';
-import { traceUntilFirst } from '@angular/fire/performance';
-
-import { Note } from '../models/Note';
-import { NotesService } from '../services/notes.service';
 
 interface RegisterCredentials {
   email: string;
@@ -28,18 +23,15 @@ interface LoginCredentials {
 })
 export class AuthService {
   private readonly userDisposable: Subscription | undefined;
-  public readonly user: Observable<User | null> = EMPTY;
+  public readonly user$: Observable<User | null> = EMPTY;
 
   isLoggedIn = false;
 
   constructor(private auth: Auth) {
     if (auth) {
-      this.user = authState(this.auth);
+      this.user$ = authState(this.auth);
       this.userDisposable = authState(this.auth)
-        .pipe(
-          traceUntilFirst('auth'),
-          map((u) => !!u)
-        )
+        .pipe(map((auth) => !!auth))
         .subscribe((isLoggedIn) => {
           this.isLoggedIn = isLoggedIn;
         });

@@ -5,24 +5,29 @@
       inputType="text"
       [control]="$any(noteForm.get('title'))"
     ></app-input>
-    <div fxLayout="row" fxLayoutAlign="space-between center">
-      <app-input
-        label="Category"
-        inputType="text"
-        [control]="$any(noteForm.get('category'))"
-      ></app-input>
-      <button mat-mini-fab color="gray" aria-label="Add button">
-        <mat-icon>add</mat-icon>
-      </button>
-    </div>
-
+    <app-input
+      label="Category"
+      inputType="text"
+      [control]="$any(noteForm.get('category'))"
+    ></app-input>
     <app-input
       label="Body"
       controlType="textarea"
       [control]="$any(noteForm.get('content'))"
     ></app-input>
 
-    <div fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="redError secondError" *ngIf="noteForm.errors">
+      <p *ngIf="noteForm.errors['noConnection']">
+        No internet connection detected, failed to save. Try again later.
+      </p>
+      <p *ngIf="noteForm.errors['unknownError']">Failed to save.</p>
+    </div>
+
+    <div
+      fxLayout="row"
+      fxLayoutAlign="space-between center"
+      class="noteButtons"
+    >
       <div class="cancelButton">
         <button
           mat-raised-button
@@ -35,7 +40,12 @@
         </button>
       </div>
       <div class="addButton">
-        <button mat-raised-button color="primary" aria-label="Add button">
+        <button
+          mat-raised-button
+          color="primary"
+          aria-label="Add button"
+          [disabled]="!noteForm.valid"
+        >
           Save
         </button>
       </div>
