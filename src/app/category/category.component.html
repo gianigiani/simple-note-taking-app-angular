@@ -1,0 +1,13 @@
+<mat-card *ngIf="category" class="categoryCard">
+  <div>
+    <p>{{ category.category }}</p>
+  </div>
+  <div class="cardButton deleteCategory">
+    <mat-icon
+      aria-hidden="false"
+      aria-label="Close icon"
+      (click)="onDeleteCategory()"
+      >close</mat-icon
+    >
+  </div>
+</mat-card>

@@ -12,12 +12,15 @@ import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
+import { CategoryComponent } from '../category/category.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
     AddNoteComponent,
     DashboardComponent,
     NoteComponent,
+    CategoryComponent,
     NotFoundComponent,
   ],
   imports: [
@@ -29,6 +32,7 @@ import { MatButtonModule } from '@angular/material/button';
     ReactiveFormsModule,
     FlexLayoutModule,
     MatButtonModule,
+    MatTooltipModule,
   ],
 })
 export class DashboardModule {}

@@ -3,3 +3,12 @@
   justify-content: center;
   width: 70px;
 }
+mat-card {
+  padding: 1rem 1.5rem;
+}
+
+.blockButton {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+}

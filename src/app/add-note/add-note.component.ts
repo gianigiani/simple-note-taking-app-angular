@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import { CategoriesService } from '../services/categories.service';
 import { NotesService } from '../services/notes.service';
 
 @Component({
@@ -11,16 +12,20 @@ import { NotesService } from '../services/notes.service';
 })
 export class AddNoteComponent implements OnInit {
   userUid: string;
+  // categories: string[] = ['Reminders', 'Shopping List', 'Todo'];
+
+  categories: any[];
 
   noteForm = new FormGroup({
     title: new FormControl('', [Validators.required]),
-    category: new FormControl('', [Validators.required]),
+    category: new FormControl(null, [Validators.required]),
     content: new FormControl('', [Validators.required]),
   });
 
   constructor(
     private notesService: NotesService,
     private authService: AuthService,
+    private categoriesService: CategoriesService,
     private router: Router
   ) {}
 
@@ -29,6 +34,11 @@ export class AddNoteComponent implements OnInit {
       if (item) {
         this.userUid = item.uid;
       }
+    });
+
+    this.categoriesService.getCategories().subscribe((categories) => {
+      this.categories = categories;
+      console.log(categories);
     });
   }
 

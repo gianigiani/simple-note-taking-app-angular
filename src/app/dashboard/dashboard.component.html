@@ -7,8 +7,21 @@
           color="gray"
           aria-label="Add button"
           (click)="onAddNewNote()"
+          matTooltip="Add a new note"
         >
           <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <div class="roundButton">
+        <button
+          mat-mini-fab
+          color="gray"
+          aria-label="Add button"
+          (click)="onNewCategory()"
+          [matTooltip]="showCategory ? 'Notes' : 'Categories'"
+        >
+          <mat-icon *ngIf="!showCategory">category</mat-icon>
+          <mat-icon *ngIf="showCategory">checklist</mat-icon>
         </button>
       </div>
       <div class="roundButton">
@@ -22,7 +35,46 @@
         </button>
       </div>
     </div>
-    <div class="notesContainer">
+    <div *ngIf="showCategory" class="categoriesContainer">
+      <div class="addCategoryInput">
+        <mat-card class="selectCategory">
+          <form (ngSubmit)="onSubmit()" [formGroup]="categoryForm">
+            <app-input
+              label="Add new category"
+              inputType="text"
+              [control]="$any(categoryForm.get('category'))"
+            ></app-input>
+            <!-- for testing -->
+            <!-- {{ categoryForm.get("category").errors | json }} -->
+            <div class="redError secondError" *ngIf="categoryForm.errors">
+              <p *ngIf="categoryForm.errors['noConnection']">
+                No internet connection detected, failed to save. Try again
+                later.
+              </p>
+              <p *ngIf="categoryForm.errors['unknownError']">Failed to save.</p>
+            </div>
+            <button
+              color="primary"
+              mat-raised-button
+              class="blockButton"
+              [disabled]="!categoryForm.valid"
+            >
+              Add
+            </button>
+          </form>
+        </mat-card>
+      </div>
+
+      <div class="categories">
+        <app-category
+          class="category"
+          *ngFor="let category of categories"
+          [category]="category"
+          (delete)="deleteCategory(category.id)"
+        ></app-category>
+      </div>
+    </div>
+    <div class="notesContainer" *ngIf="!showCategory">
       <app-note
         *ngFor="let note of notes"
         [note]="note"

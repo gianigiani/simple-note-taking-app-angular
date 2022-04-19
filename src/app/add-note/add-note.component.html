@@ -5,11 +5,14 @@
       inputType="text"
       [control]="$any(noteForm.get('title'))"
     ></app-input>
-    <app-input
-      label="Category"
-      inputType="text"
-      [control]="$any(noteForm.get('category'))"
-    ></app-input>
+    <div class="selectCategory">
+      <label>Category</label>
+      <select formControlName="category">
+        <option *ngFor="let category of categories" [ngValue]="category">
+          {{ category.category }}
+        </option>
+      </select>
+    </div>
     <app-input
       label="Body"
       controlType="textarea"
