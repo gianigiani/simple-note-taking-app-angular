@@ -11,6 +11,7 @@ import {
   query,
   serverTimestamp,
   getDoc,
+  where,
 } from '@angular/fire/firestore';
 
 import { Note } from '../models/Note';
@@ -23,9 +24,10 @@ export class NotesService {
 
   constructor(private readonly firestore: Firestore) {}
 
-  getNotes(): Observable<Note[]> {
+  getNotes(userUid: string): Observable<Note[]> {
     const notesCollection = query(
       collection(this.firestore, 'notes'),
+      where('userUid', '==', userUid),
       orderBy('category', 'asc'),
       orderBy('createdAt', 'desc')
       // push id for single note

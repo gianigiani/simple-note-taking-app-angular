@@ -4,6 +4,7 @@ import { NotesService } from '../services/notes.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CategoriesService } from '../services/categories.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,6 +15,7 @@ export class DashboardComponent implements OnInit {
   notes: Note[];
   showCategory: boolean = false;
   categories: any[];
+  userUid: string | null;
 
   categoryForm = new FormGroup({
     category: new FormControl('', [
@@ -26,17 +28,21 @@ export class DashboardComponent implements OnInit {
   constructor(
     private notesService: NotesService,
     private categoriesService: CategoriesService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    this.notesService.getNotes().subscribe((notes) => {
-      this.notes = notes;
-    });
+    this.authService.user$.subscribe((user) => {
+      this.userUid = user.uid;
+      //get the data only if we have UserUid
+      this.notesService.getNotes(this.userUid).subscribe((notes) => {
+        this.notes = notes;
+      });
 
-    this.categoriesService.getCategories().subscribe((categories) => {
-      this.categories = categories;
-      console.log(categories);
+      this.categoriesService.getCategories().subscribe((categories) => {
+        this.categories = categories;
+      });
     });
   }
 

@@ -38,7 +38,6 @@ export class AddNoteComponent implements OnInit {
 
     this.categoriesService.getCategories().subscribe((categories) => {
       this.categories = categories;
-      console.log(categories);
     });
   }
 

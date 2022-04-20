@@ -31,7 +31,7 @@ export class AuthService {
     if (auth) {
       this.user$ = authState(this.auth);
       this.userDisposable = authState(this.auth)
-        .pipe(map((auth) => !!auth))
+        .pipe(map((authorization) => !!authorization))
         .subscribe((isLoggedIn) => {
           this.isLoggedIn = isLoggedIn;
         });

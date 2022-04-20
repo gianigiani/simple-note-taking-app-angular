@@ -9,7 +9,7 @@ import { User } from '../models/User';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  user: User;
+  user: User | null;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -20,7 +20,9 @@ export class NavbarComponent implements OnInit {
   }
 
   onLogout() {
-    this.authService.logout();
-    this.router.navigateByUrl('/login');
+    this.authService.logout().then(() => {
+      // this.user = null;
+      this.router.navigateByUrl('/login');
+    });
   }
 }
