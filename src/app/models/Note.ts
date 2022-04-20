@@ -4,5 +4,8 @@ export interface Note {
   content: string;
   createdAt?: Date;
   userUid?: string;
-  category: string;
+  category: {
+    id: string;
+    category: string;
+  };
 }

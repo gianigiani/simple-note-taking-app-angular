@@ -46,7 +46,7 @@ export class NotesService {
     return await addDoc(collection(this.firestore, 'notes'), {
       title: note.title,
       content: note.content,
-      category: note.category,
+      category: note.category.category,
       createdAt: serverTimestamp(),
       userUid,
     });
