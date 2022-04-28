@@ -8,8 +8,8 @@
     <div class="selectCategory">
       <label>Category</label>
       <select formControlName="category">
-        <option *ngFor="let category of categories" [ngValue]="category">
-          {{ category.category }}
+        <option *ngFor="let category of categories" [ngValue]="category.id">
+          {{ category.name }}
         </option>
       </select>
     </div>

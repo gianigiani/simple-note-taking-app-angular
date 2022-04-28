@@ -1,9 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-
-interface Category {
-  id: string;
-  category: string;
-}
+import { Category } from '../models/Category';
 
 @Component({
   selector: 'app-category',

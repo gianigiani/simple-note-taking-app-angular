@@ -8,35 +8,39 @@ import {
   addDoc,
   deleteDoc,
   doc,
+  where,
 } from '@angular/fire/firestore';
+import { Category } from '../models/Category';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CategoriesService {
-  public categories$: Observable<string[]>;
+  public categories$: Observable<Category[]>;
 
   constructor(private readonly firestore: Firestore) {}
 
-  getCategories(): Observable<string[]> {
+  getCategories(userUid: string): Observable<Category[]> {
     const categoryCollection = query(
-      collection(this.firestore, 'categories')
+      collection(this.firestore, 'categories'),
+      where('userUid', '==', userUid)
       // push id for single note
-    ).withConverter<any>({
+    ).withConverter<Category>({
       fromFirestore: (snapshot) => {
-        const { category } = snapshot.data();
+        const { name, userUid } = snapshot.data();
         const { id } = snapshot;
-        return { id, category };
+        return { id, name, userUid };
       },
       toFirestore: (elem: any) => elem,
     });
-    this.categories$ = collectionData<any>(categoryCollection);
+    this.categories$ = collectionData<Category>(categoryCollection);
     return this.categories$;
   }
 
-  async addNewCategory(category: any) {
+  async addNewCategory(category: Category, userUid: string) {
     return await addDoc(collection(this.firestore, 'categories'), {
-      category: category.category,
+      name: category.name,
+      userUid,
     });
   }
 

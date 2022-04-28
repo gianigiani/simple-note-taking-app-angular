@@ -12,6 +12,7 @@ import {
   serverTimestamp,
   getDoc,
   where,
+  updateDoc,
 } from '@angular/fire/firestore';
 
 import { Note } from '../models/Note';
@@ -44,18 +45,26 @@ export class NotesService {
     return this.notes$;
   }
 
+  async getSingleDoc(id: string) {
+    return await getDoc<any>(doc(this.firestore, `notes/${id}`));
+  }
+
   async addNewNote(note: Note, userUid: string) {
     return await addDoc(collection(this.firestore, 'notes'), {
       title: note.title,
       content: note.content,
-      category: note.category.category,
+      category: note.category,
       createdAt: serverTimestamp(),
       userUid,
     });
   }
 
-  async getSingleDoc(id: string) {
-    return await getDoc<any>(doc(this.firestore, `notes/${id}`));
+  async updateNote(note: Note, id: string) {
+    return await updateDoc(doc(this.firestore, `notes/${id}`), {
+      title: note.title,
+      content: note.content,
+      category: note.category,
+    });
   }
 
   async deleteNote(id: string) {

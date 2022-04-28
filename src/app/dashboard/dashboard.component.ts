@@ -18,7 +18,7 @@ export class DashboardComponent implements OnInit {
   userUid: string | null;
 
   categoryForm = new FormGroup({
-    category: new FormControl('', [
+    name: new FormControl('', [
       Validators.required,
       Validators.minLength(2),
       Validators.maxLength(20),
@@ -35,14 +35,16 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.authService.user$.subscribe((user) => {
       this.userUid = user.uid;
-      //get the data only if we have UserUid
+      //get the data only if we have userUid
       this.notesService.getNotes(this.userUid).subscribe((notes) => {
         this.notes = notes;
       });
 
-      this.categoriesService.getCategories().subscribe((categories) => {
-        this.categories = categories;
-      });
+      this.categoriesService
+        .getCategories(this.userUid)
+        .subscribe((categories) => {
+          this.categories = categories;
+        });
     });
   }
 
@@ -61,9 +63,7 @@ export class DashboardComponent implements OnInit {
   }
 
   onEdit(id: string) {
-    console.log('go to the /new/:id and show the content of the note');
-    // this.router.navigateByUrl(`/note/:${id}`);
-    // get docData after id and populate the form
+    this.router.navigateByUrl(`/note/${id}`);
   }
 
   onNewCategory() {
@@ -75,9 +75,9 @@ export class DashboardComponent implements OnInit {
     if (this.categoryForm.invalid) {
       return;
     }
-
+    console.log(this.categoryForm.value);
     this.categoriesService
-      .addNewCategory(this.categoryForm.value)
+      .addNewCategory(this.categoryForm.value, this.userUid)
       .then(() => {
         this.categoryForm.reset();
       })
