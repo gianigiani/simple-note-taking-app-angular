@@ -3,6 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -17,7 +19,11 @@ export class LoginComponent implements OnInit {
       Validators.maxLength(20),
     ]),
   });
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private _snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {}
 
@@ -31,6 +37,9 @@ export class LoginComponent implements OnInit {
       .login(this.authForm.value)
       .then(() => {
         this.router.navigateByUrl('/');
+        this._snackBar.open('User logged in successfully', '', {
+          duration: 3000,
+        });
       })
       .catch((err) => {
         if (err.message === ('EMAIL_NOT_FOUND' || 'INVALID_PASSWORD')) {

@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { MatchPassword } from '../validators/match-password';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-register',
@@ -31,7 +32,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private matchPassword: MatchPassword,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {}
@@ -46,6 +48,9 @@ export class RegisterComponent implements OnInit {
       .register(this.authForm.value)
       .then(() => {
         this.router.navigateByUrl('/');
+        this._snackBar.open('User registered successfully', '', {
+          duration: 3000,
+        });
       })
       .catch((err) => {
         if (!err.status) {

@@ -5,6 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CategoriesService } from '../services/categories.service';
 import { AuthService } from '../auth/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dashboard',
@@ -29,7 +30,8 @@ export class DashboardComponent implements OnInit {
     private notesService: NotesService,
     private categoriesService: CategoriesService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -55,7 +57,14 @@ export class DashboardComponent implements OnInit {
   }
 
   onDelete(id: string) {
-    this.notesService.deleteNote(id);
+    this.notesService
+      .deleteNote(id)
+      .then(() => {
+        this._snackBar.open('Note deleted', '', {
+          duration: 3000,
+        });
+      })
+      .catch((err) => {});
   }
 
   onAddNewNote() {
@@ -80,6 +89,9 @@ export class DashboardComponent implements OnInit {
       .addNewCategory(this.categoryForm.value, this.userUid)
       .then(() => {
         this.categoryForm.reset();
+        this._snackBar.open('New category added', '', {
+          duration: 3000,
+        });
       })
       .catch((err) => {
         if (!err.status) {
@@ -91,6 +103,13 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteCategory(id: string) {
-    this.categoriesService.deleteSingleCategory(id);
+    this.categoriesService
+      .deleteSingleCategory(id)
+      .then(() => {
+        this._snackBar.open('Category deleted', '', {
+          duration: 3000,
+        });
+      })
+      .catch((err) => {});
   }
 }

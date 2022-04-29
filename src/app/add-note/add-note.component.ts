@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { AuthService } from '../auth/auth.service';
+import { NotesService } from '../services/notes.service';
+import { CategoriesService } from '../services/categories.service';
 import { Category } from '../models/Category';
 import { Note } from '../models/Note';
-import { CategoriesService } from '../services/categories.service';
-import { NotesService } from '../services/notes.service';
 
 @Component({
   selector: 'app-add-note',
@@ -26,7 +27,8 @@ export class AddNoteComponent implements OnInit {
     private authService: AuthService,
     private categoriesService: CategoriesService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -64,7 +66,7 @@ export class AddNoteComponent implements OnInit {
       this.note = note.data();
 
       // Assign the new values to noteForm
-      // "Hack" to make read tha data, needs to be changed later
+      // "Hack" to read the data, needs to be changed later
       this.noteForm.patchValue({
         title: this.note.title,
         category: this.note.category,
@@ -85,6 +87,10 @@ export class AddNoteComponent implements OnInit {
           this.noteForm.reset();
           this.router.navigateByUrl('/');
           this.newNote = false;
+
+          this._snackBar.open('New note added', '', {
+            duration: 3000,
+          });
         })
         .catch((err) => {
           if (!err.status) {
@@ -101,6 +107,10 @@ export class AddNoteComponent implements OnInit {
           this.noteForm.reset();
           this.router.navigateByUrl('/');
           this.newNote = false;
+
+          this._snackBar.open('Note was updated', '', {
+            duration: 3000,
+          });
         })
         .catch((err) => {
           if (!err.status) {
