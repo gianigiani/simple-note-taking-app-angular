@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { MatchPassword } from '../validators/match-password';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { from } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -44,20 +45,21 @@ export class RegisterComponent implements OnInit {
     }
 
     // register
-    this.authService
-      .register(this.authForm.value)
-      .then(() => {
+    from(this.authService.register(this.authForm.value)).subscribe({
+      next: () => {
         this.router.navigateByUrl('/');
         this._snackBar.open('User registered successfully', '', {
           duration: 3000,
         });
-      })
-      .catch((err) => {
+      },
+      error: (err) => {
         if (!err.status) {
           this.authForm.setErrors({ noConnection: true });
         } else {
           this.authForm.setErrors({ unknownError: true });
         }
-      });
+      },
+      complete: () => console.log('Register COMPLETED'),
+    });
   }
 }

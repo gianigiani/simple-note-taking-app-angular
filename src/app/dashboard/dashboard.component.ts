@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { CategoriesService } from '../services/categories.service';
 import { AuthService } from '../auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard',
@@ -35,19 +37,21 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authService.user$.subscribe((user) => {
-      this.userUid = user.uid;
-      //get the data only if we have userUid
-      this.notesService.getNotes(this.userUid).subscribe((notes) => {
-        this.notes = notes;
-      });
-
-      this.categoriesService
-        .getCategories(this.userUid)
-        .subscribe((categories) => {
-          this.categories = categories;
+    this.authService.user$
+      .pipe(map((user) => user.uid))
+      .subscribe((userUid) => {
+        this.userUid = userUid;
+        //get the data only if we have userUid
+        this.notesService.getNotes(userUid).subscribe((notes) => {
+          this.notes = notes;
         });
-    });
+
+        this.categoriesService
+          .getCategories(userUid)
+          .subscribe((categories) => {
+            this.categories = categories;
+          });
+      });
   }
 
   onFilter() {
@@ -57,14 +61,14 @@ export class DashboardComponent implements OnInit {
   }
 
   onDelete(id: string) {
-    this.notesService
-      .deleteNote(id)
-      .then(() => {
+    from(this.notesService.deleteNote(id)).subscribe({
+      next: () =>
         this._snackBar.open('Note deleted', '', {
           duration: 3000,
-        });
-      })
-      .catch((err) => {});
+        }),
+      error: (err) => console.log(err),
+      complete: () => console.log('Note detele COMPLETED'),
+    });
   }
 
   onAddNewNote() {
@@ -85,31 +89,37 @@ export class DashboardComponent implements OnInit {
       return;
     }
     console.log(this.categoryForm.value);
-    this.categoriesService
-      .addNewCategory(this.categoryForm.value, this.userUid)
-      .then(() => {
+    from(
+      this.categoriesService.addNewCategory(
+        this.categoryForm.value,
+        this.userUid
+      )
+    ).subscribe({
+      next: () => {
         this.categoryForm.reset();
         this._snackBar.open('New category added', '', {
           duration: 3000,
         });
-      })
-      .catch((err) => {
+      },
+      error: (err) => {
         if (!err.status) {
           this.categoryForm.setErrors({ noConnection: true });
         } else {
           this.categoryForm.setErrors({ unknownError: true });
         }
-      });
+      },
+      complete: () => console.log('Add new category COMPLETED'),
+    });
   }
 
   deleteCategory(id: string) {
-    this.categoriesService
-      .deleteSingleCategory(id)
-      .then(() => {
+    from(this.categoriesService.deleteSingleCategory(id)).subscribe({
+      next: () =>
         this._snackBar.open('Category deleted', '', {
           duration: 3000,
-        });
-      })
-      .catch((err) => {});
+        }),
+      error: (err) => console.log(err),
+      complete: () => console.log('Delete category COMPLETED'),
+    });
   }
 }

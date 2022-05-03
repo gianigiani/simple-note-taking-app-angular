@@ -4,6 +4,7 @@ import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { from } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -33,18 +34,19 @@ export class LoginComponent implements OnInit {
     }
 
     // login
-    this.authService
-      .login(this.authForm.value)
-      .then(() => {
+    from(this.authService.login(this.authForm.value)).subscribe({
+      next: () => {
         this.router.navigateByUrl('/');
         this._snackBar.open('User logged in successfully', '', {
           duration: 3000,
         });
-      })
-      .catch((err) => {
+      },
+      error: (err) => {
         if (err.message === ('EMAIL_NOT_FOUND' || 'INVALID_PASSWORD')) {
           this.authForm.setErrors({ credentials: true });
         }
-      });
+      },
+      complete: () => console.log('Login COMPLETED'),
+    });
   }
 }

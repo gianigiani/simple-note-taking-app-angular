@@ -8,6 +8,8 @@ import { NotesService } from '../services/notes.service';
 import { CategoriesService } from '../services/categories.service';
 import { Category } from '../models/Category';
 import { Note } from '../models/Note';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-note',
@@ -51,27 +53,40 @@ export class AddNoteComponent implements OnInit {
       }
     });
 
-    this.authService.user$.subscribe((item) => {
-      if (item) {
-        this.userUid = item.uid;
-      }
-      this.categoriesService.getCategories(item.uid).subscribe((categories) => {
-        this.categories = categories;
+    this.authService.user$
+      .pipe(map((user) => user.uid))
+      .subscribe((userUid) => {
+        if (userUid) {
+          this.userUid = userUid;
+        }
+        this.categoriesService
+          .getCategories(userUid)
+          .subscribe((categories) => {
+            this.categories = categories;
+          });
       });
-    });
   }
 
   getSingleDocData(noteId: string) {
-    this.notesService.getSingleDoc(noteId).then((note) => {
-      this.note = note.data();
+    const getSingleDocumentData = this.notesService.getSingleDoc(noteId);
+    const obsGetSingleDocData$ = from(getSingleDocumentData);
 
-      // Assign the new values to noteForm
-      // "Hack" to read the data, needs to be changed later
-      this.noteForm.patchValue({
-        title: this.note.title,
-        category: this.note.category,
-        content: this.note.content,
-      });
+    obsGetSingleDocData$.subscribe({
+      next: (note) => {
+        this.note = note.data();
+
+        // Assign the new values to noteForm
+        // "Hack" to read the data, needs to be changed later
+        this.noteForm.patchValue({
+          title: this.note.title,
+          category: this.note.category,
+          content: this.note.content,
+        });
+      },
+      error: (err) => {
+        console.log(err);
+      },
+      complete: () => console.log('Get single doc data COMPLETED'),
     });
   }
 
@@ -81,9 +96,13 @@ export class AddNoteComponent implements OnInit {
     }
     if (this.newNote) {
       // Save new note
-      this.notesService
-        .addNewNote(this.noteForm.value, this.userUid)
-        .then(() => {
+      const addNote = this.notesService.addNewNote(
+        this.noteForm.value,
+        this.userUid
+      );
+      const obsAddNote$ = from(addNote);
+      obsAddNote$.subscribe({
+        next: () => {
           this.noteForm.reset();
           this.router.navigateByUrl('/');
           this.newNote = false;
@@ -91,19 +110,26 @@ export class AddNoteComponent implements OnInit {
           this._snackBar.open('New note added', '', {
             duration: 3000,
           });
-        })
-        .catch((err) => {
+        },
+        error: (err) => {
           if (!err.status) {
             this.noteForm.setErrors({ noConnection: true });
           } else {
             this.noteForm.setErrors({ unknownError: true });
           }
-        });
+        },
+        complete: () => console.log('adding new note competed'),
+      });
     } else {
       // Update existing note
-      this.notesService
-        .updateNote(this.noteForm.value, this.noteId)
-        .then(() => {
+      const updateNote = this.notesService.updateNote(
+        this.noteForm.value,
+        this.noteId
+      );
+      const obsUpdateNote$ = from(updateNote);
+
+      obsUpdateNote$.subscribe({
+        next: () => {
           this.noteForm.reset();
           this.router.navigateByUrl('/');
           this.newNote = false;
@@ -111,14 +137,16 @@ export class AddNoteComponent implements OnInit {
           this._snackBar.open('Note was updated', '', {
             duration: 3000,
           });
-        })
-        .catch((err) => {
+        },
+        error: (err) => {
           if (!err.status) {
             this.noteForm.setErrors({ noConnection: true });
           } else {
             this.noteForm.setErrors({ unknownError: true });
           }
-        });
+        },
+        complete: () => console.log('Update note COMPLETED'),
+      });
     }
   }
 
