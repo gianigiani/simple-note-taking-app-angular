@@ -37,32 +37,7 @@
     </div>
     <div *ngIf="showCategory" class="categoriesContainer">
       <div class="addCategoryInput">
-        <mat-card class="selectCategory">
-          <form (ngSubmit)="onSubmit()" [formGroup]="categoryForm">
-            <app-input
-              label="Add new category"
-              inputType="text"
-              [control]="$any(categoryForm.get('name'))"
-            ></app-input>
-            <!-- for testing -->
-            <!-- {{ categoryForm.get("category").errors | json }} -->
-            <div class="redError secondError" *ngIf="categoryForm.errors">
-              <p *ngIf="categoryForm.errors['noConnection']">
-                No internet connection detected, failed to save. Try again
-                later.
-              </p>
-              <p *ngIf="categoryForm.errors['unknownError']">Failed to save.</p>
-            </div>
-            <button
-              color="primary"
-              mat-raised-button
-              class="blockButton"
-              [disabled]="!categoryForm.valid"
-            >
-              Add
-            </button>
-          </form>
-        </mat-card>
+        <app-add-category [userUid]="userUid"></app-add-category>
       </div>
 
       <div class="categories">
