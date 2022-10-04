@@ -16,25 +16,43 @@
         <button
           mat-mini-fab
           color="gray"
-          aria-label="Add button"
+          aria-label="Category button"
           (click)="onNewCategory()"
           [matTooltip]="showCategory ? 'Notes' : 'Categories'"
         >
-          <mat-icon *ngIf="!showCategory">category</mat-icon>
-          <mat-icon *ngIf="showCategory">checklist</mat-icon>
+          <mat-icon>{{ showCategory ? "checklist" : "category" }}</mat-icon>
         </button>
       </div>
       <div class="roundButton">
         <button
           mat-mini-fab
           color="gray"
-          aria-label="Add button"
-          (click)="onFilter()"
+          aria-label="Sort button"
+          matTooltip="Sort"
+          [matMenuTriggerFor]="sort"
         >
           <mat-icon><span class="material-icons"> sort </span></mat-icon>
         </button>
+        <!-- (click)="onFilter()" -->
+
+        <mat-menu #sort="matMenu">
+          <button mat-menu-item>
+            <!-- TODO: implement condition for selected sort  -->
+            <mat-icon>done</mat-icon>
+            <span>A to Z</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>none</mat-icon>
+            <span>Z to A</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>none</mat-icon>
+            <span>Date created</span>
+          </button>
+        </mat-menu>
       </div>
     </div>
+
     <div *ngIf="showCategory" class="categoriesContainer">
       <div class="addCategoryInput">
         <app-add-category [userUid]="userUid"></app-add-category>
@@ -59,8 +77,6 @@
       >
         ></app-note
       >
-
-      <!-- [routerLink]="note.id" -->
     </div>
   </div>
 </div>

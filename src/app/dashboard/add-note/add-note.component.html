@@ -7,12 +7,15 @@
     ></app-input>
     <div class="selectCategory">
       <label>Category</label>
-      <select formControlName="category">
+
+      <select [formControl]="$any(noteForm.get('category'))">
+        <!-- if newNote -->
         <option *ngFor="let category of categories" [ngValue]="category">
           {{ category.name }}
         </option>
       </select>
     </div>
+
     <app-input
       label="Body"
       controlType="textarea"

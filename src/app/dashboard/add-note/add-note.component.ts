@@ -3,11 +3,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { NotesService } from '../services/notes.service';
 import { CategoriesService } from '../services/categories.service';
-import { Category } from '../models/Category';
-import { Note } from '../models/Note';
+import { Category } from '../../models/Category';
+import { Note } from '../../models/Note';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -36,7 +36,7 @@ export class AddNoteComponent implements OnInit {
   ngOnInit(): void {
     this.noteForm = new FormGroup({
       title: new FormControl('', [Validators.required]),
-      category: new FormControl([], [Validators.required]),
+      category: new FormControl(null, [Validators.required]),
       content: new FormControl('', [Validators.required]),
     });
 
@@ -82,6 +82,7 @@ export class AddNoteComponent implements OnInit {
           category: this.note.category,
           content: this.note.content,
         });
+        console.log(this.noteForm.value);
       },
       error: (err) => {
         console.log(err);
@@ -95,6 +96,7 @@ export class AddNoteComponent implements OnInit {
       return;
     }
     if (this.newNote) {
+      console.log(this.noteForm.value);
       // Save new note
       const addNote = this.notesService.addNewNote(
         this.noteForm.value,

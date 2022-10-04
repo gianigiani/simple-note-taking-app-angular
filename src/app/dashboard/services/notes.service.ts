@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import {
   addDoc,
   collection,
@@ -15,7 +16,7 @@ import {
   updateDoc,
 } from '@angular/fire/firestore';
 
-import { Note } from '../models/Note';
+import { Note } from '../../models/Note';
 
 @Injectable({
   providedIn: 'root',
@@ -37,6 +38,7 @@ export class NotesService {
         const { content, userUid, createdAt, category, title } =
           snapshot.data();
         const { id } = snapshot;
+
         return { id, content, userUid, createdAt, category, title };
       },
       toFirestore: (elem: Note) => elem,
@@ -49,11 +51,11 @@ export class NotesService {
     return await getDoc<any>(doc(this.firestore, `notes/${id}`));
   }
 
-  async addNewNote(note: Note, userUid: string) {
+  async addNewNote(note: any, userUid: string) {
     return await addDoc(collection(this.firestore, 'notes'), {
       title: note.title,
       content: note.content,
-      category: note.category,
+      category: note.category.name,
       createdAt: serverTimestamp(),
       userUid,
     });

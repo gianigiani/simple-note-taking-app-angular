@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Note } from '../models/Note';
-import { NotesService } from '../services/notes.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NotesService } from './services/notes.service';
 import { Router } from '@angular/router';
-import { CategoriesService } from '../services/categories.service';
+import { CategoriesService } from './services/categories.service';
 import { AuthService } from '../auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { from } from 'rxjs';
@@ -19,6 +18,7 @@ export class DashboardComponent implements OnInit {
   showCategory: boolean = false;
   categories: any[];
   userUid: string | null;
+  sortSelected: string = 'ascendent';
 
   constructor(
     private notesService: NotesService,
@@ -47,9 +47,9 @@ export class DashboardComponent implements OnInit {
   }
 
   onFilter() {
-    return this.notesService
-      .filterNotes()
-      .subscribe((filteredNotes) => (this.notes = filteredNotes));
+    //   return this.notesService
+    //     .filterNotes()
+    //     .subscribe((filteredNotes) => (this.notes = filteredNotes));
   }
 
   onDelete(id: string) {

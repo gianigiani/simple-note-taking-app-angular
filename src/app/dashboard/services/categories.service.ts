@@ -10,7 +10,7 @@ import {
   doc,
   where,
 } from '@angular/fire/firestore';
-import { Category } from '../models/Category';
+import { Category } from '../../models/Category';
 
 @Injectable({
   providedIn: 'root',

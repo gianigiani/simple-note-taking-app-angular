@@ -31,7 +31,7 @@ export class AddCategoryComponent implements OnInit {
     if (this.categoryForm.invalid) {
       return;
     }
-    console.log(this.categoryForm.value);
+
     from(
       this.categoriesService.addNewCategory(
         this.categoryForm.value,
